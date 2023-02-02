@@ -2,6 +2,9 @@
 
 1. Basic NFT
 2. Random NFT
+
+- random NFT
+
 3. Dynamic SVG NFT
 
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
