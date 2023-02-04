@@ -1,11 +1,59 @@
 const { network, ethers } = require("hardhat");
 const { networkConfig } = require("../helper.config");
+const {
+  storeImage,
+  storeTokenURIMetadata,
+} = require("../utils/uploadTopinata");
 const { verify } = require("../utils/verify");
+require("dotenv").config();
 
 const chainId = network.config.chainId;
+const imagesLocation = "images/randomNft";
+const metaDataTemplate = {
+  name: "",
+  description: "",
+  image: "",
+  attributes: [
+    {
+      trait_type: "cuteness",
+      value: 100,
+    },
+  ],
+};
 
 module.exports = async ({ deployments, getNamedAccounts }) => {
-  let mockContract, vrfAddress, subscriptionId;
+  let mockContract, vrfAddress, subscriptionId, tokenURIS;
+
+  const handleTokenURIs = async () => {
+    tokenURIS = [];
+
+    const { responses: pinataResponse, imageFiles } = await storeImage(
+      imagesLocation
+    );
+
+    for (index in pinataResponse) {
+      let tokenURIMetaData = { ...metaDataTemplate };
+
+      tokenURIMetaData.name = imageFiles[index].replace(".png", "");
+      tokenURIMetaData.description = `${tokenURIMetaData.name} is a good ART.`;
+      tokenURIMetaData.image = `ipfs://${pinataResponse[index].IpfsHash}`;
+
+      const storeMetaDataRes = await storeTokenURIMetadata(
+        tokenURIMetaData
+      ).catch((e) => console.log(e));
+
+      tokenURIS.push(`ipfs://${storeMetaDataRes.IpfsHash}`);
+      console.log(`Uploading ${tokenURIMetaData.name}`);
+      console.log("Uploading Token URIs. they are:");
+      console.log(tokenURIS);
+    }
+
+    return tokenURIS;
+  };
+  if (process.env.UPLOAD_TO_PINATA == "true") {
+    tokenURIS = await handleTokenURIs();
+  }
+
   const amount = ethers.utils.parseEther("2");
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
@@ -22,7 +70,6 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
     vrfAddress = networkConfig[chainId]["vrfAddress"];
     subscriptionId = networkConfig[chainId]["subId"];
   }
-
   const args = [
     vrfAddress,
     networkConfig[chainId]["keyHash"],
