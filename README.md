@@ -4,6 +4,7 @@
 2. Random NFT
 
 - random NFT
+  // Continue from upload files to server
 
 3. Dynamic SVG NFT
 
