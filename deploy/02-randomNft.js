@@ -43,9 +43,9 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
       ).catch((e) => console.log(e));
 
       tokenURIS.push(`ipfs://${storeMetaDataRes.IpfsHash}`);
-      console.log(`Uploading ${tokenURIMetaData.name}`);
-      console.log("Uploading Token URIs. they are:");
-      console.log(tokenURIS);
+      // console.log(`Uploading ${tokenURIMetaData.name}`);
+      // console.log("Uploading Token URIs. they are:");
+      // console.log(tokenURIS);
     }
 
     return tokenURIS;
@@ -53,7 +53,6 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
   if (process.env.UPLOAD_TO_PINATA == "true") {
     tokenURIS = await handleTokenURIs();
   }
-
   const amount = ethers.utils.parseEther("2");
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
@@ -75,7 +74,7 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
     networkConfig[chainId]["keyHash"],
     subscriptionId,
     networkConfig[chainId]["callBackGasLimit"],
-    networkConfig[chainId]["NFT_URIs"],
+    tokenURIS,
     networkConfig[chainId]["MINT_FEE"],
   ];
 
