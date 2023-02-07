@@ -15,6 +15,7 @@ contract randomNFT is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
         DNM_NFT,
         ART_NFT
     }
+
     VRFCoordinatorV2Interface private i_vrfInterface;
 
     uint256 private immutable i_NFT_MINT_FEE;
@@ -83,6 +84,9 @@ contract randomNFT is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
          */
         address NFT_OWNER = s_requestIdToAddress[requestId];
 
+        // incresing the tokenId by 1, everytime an NFT is been minted, making the tokenId unique
+        tokenId += tokenId;
+
         //tokenId
         uint256 newTokenId = tokenId;
 
@@ -95,6 +99,7 @@ contract randomNFT is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
          * 28 => DNM nft
          */
         NFT nfts = getNFTfromModdedRandomNo(moddedRandomNo);
+
         _safeMint(NFT_OWNER, newTokenId);
 
         /** setting the NFT image using ERC721URISTORAGE
@@ -143,7 +148,7 @@ contract randomNFT is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
         return [10, 30, MAX_CHANCE_VALUE];
     }
 
-    function withdraw() private onlyOwner {
+    function withdraw() public onlyOwner {
         uint256 balance = address(this).balance;
         (bool success, ) = payable(msg.sender).call{value: balance}("");
         if (!success) revert randomNFT_notSuccessful();
@@ -159,5 +164,13 @@ contract randomNFT is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
 
     function getTokenId() public view returns (uint256) {
         return tokenId;
+    }
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+
+    function requesterAddress(uint256 requestId) public view returns (address) {
+        return s_requestIdToAddress[requestId];
     }
 }

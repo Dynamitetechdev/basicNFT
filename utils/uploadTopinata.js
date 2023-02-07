@@ -38,7 +38,7 @@ const storeImage = async (imagesFilePath) => {
     } catch (error) {
       console.log(error);
     }
-    console.log(imageFiles);
+    // console.log(imageFiles);
   }
   return { responses, imageFiles };
 };
