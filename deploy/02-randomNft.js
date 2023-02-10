@@ -45,7 +45,7 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
       tokenURIS.push(`ipfs://${storeMetaDataRes.IpfsHash}`);
       // console.log(`Uploading ${tokenURIMetaData.name}`);
       // console.log("Uploading Token URIs. they are:");
-      // console.log(tokenURIS);
+      console.log(tokenURIS);
     }
 
     return tokenURIS;

@@ -79,7 +79,7 @@ process.env.RANDOM_NFT
           );
         });
 
-        it.only("withdraw", async () => {
+        it("withdraw", async () => {
           const startingBalance = await RandomNFT.getBalance();
 
           await RandomNFT.withdraw();
