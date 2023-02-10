@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "base64-sol/base64.sol";
 
-error DNFT_invalidTokenURI();
+error DNFT_invalidTokenid();
 
 contract DynamicNFT is ERC721 {
     uint256 public tokenId;
@@ -25,6 +25,7 @@ contract DynamicNFT is ERC721 {
         i_priceFeeds = AggregatorV3Interface(AggregatorInterfaceAddress);
         i_lowSvg = svgToImageURI(lowSvg);
         i_highSvg = svgToImageURI(Highsvg);
+        tokenId = 0;
     }
 
     // allow the minter to choose values, so our contract can display NFT based of their values
@@ -58,7 +59,7 @@ contract DynamicNFT is ERC721 {
     function tokenURI(
         uint256 _tokenId
     ) public view override returns (string memory) {
-        if (_exists(_tokenId)) revert DNFT_invalidTokenURI();
+        if (_exists(_tokenId)) revert DNFT_invalidTokenid();
         string memory imageURI = i_lowSvg;
 
         (, int price, , , ) = i_priceFeeds.latestRoundData();
@@ -90,5 +91,13 @@ contract DynamicNFT is ERC721 {
 
     function __lowSvg() public view returns (string memory) {
         return i_lowSvg;
+    }
+
+    function __highSvg() public view returns (string memory) {
+        return i_highSvg;
+    }
+
+    function __tokenId() public view returns (uint256) {
+        return tokenId;
     }
 }
