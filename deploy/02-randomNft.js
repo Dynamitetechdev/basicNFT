@@ -90,11 +90,11 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
   if (chainId === 31337) {
     await mockContract.addConsumer(subscriptionId, randomNFTContract.address);
   }
-  if (chainId !== 31337 && process.env.ETHER_SCAN_API_KEY) {
-    log("--------verifying Random NFT Contract-----------");
-    await verify(randomNFTContract.address, args);
-    log("--------verified Random NFT Contract-----------");
-  }
+  // if (chainId !== 31337 && process.env.ETHER_SCAN_API_KEY) {
+  //   log("--------verifying Random NFT Contract-----------");
+  //   await verify(randomNFTContract.address, args);
+  //   log("--------verified Random NFT Contract-----------");
+  // }
 };
 
-module.exports.tags = ["all", "RNT"];
+module.exports.tags = ["all", "RNT", "main"];

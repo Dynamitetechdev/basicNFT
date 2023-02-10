@@ -33,4 +33,4 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
   console.log(`Aggregator Address: ${aggregatorAddress}`.bgYellow);
 };
 
-module.exports.tags = ["all", "DNFT"];
+module.exports.tags = ["all", "DNFT", "main"];

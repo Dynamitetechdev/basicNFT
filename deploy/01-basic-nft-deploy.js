@@ -15,11 +15,11 @@ module.exports = async ({ deployments, getNamedAccounts }) => {
   });
   log("----------------Deploying successful----------------------");
 
-  if (chainId !== 31337 && process.env.ETHER_SCAN_API_KEY) {
-    log("----------------Verifying BasicNFT----------------------");
-    await verify(basicNFT.address, args);
-    log("----------------Verification Successful----------------------");
-  }
+  // if (chainId !== 31337 && process.env.ETHER_SCAN_API_KEY) {
+  //   log("----------------Verifying BasicNFT----------------------");
+  //   await verify(basicNFT.address, args);
+  //   log("----------------Verification Successful----------------------");
+  // }
 };
 
-module.exports.tags = ["all", "BasicNft"];
+module.exports.tags = ["all", "BasicNft", "main"];
